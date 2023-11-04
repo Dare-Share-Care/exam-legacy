@@ -22,10 +22,20 @@
         <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
+        <PackageReference Include="Vite.AspNetCore" Version="1.10.2" />
     </ItemGroup>
 
 
     <ItemGroup>
       <Folder Include="wwwroot\" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="wwwroot\dist\assets\index-c7e05d32.js" />
+      <_ContentIncludedByDefault Remove="wwwroot\dist\assets\index-d526a0c5.css" />
+      <_ContentIncludedByDefault Remove="wwwroot\dist\assets\react-35ef61ed.svg" />
+      <_ContentIncludedByDefault Remove="wwwroot\dist\index.html" />
+      <_ContentIncludedByDefault Remove="wwwroot\dist\vite.svg" />
     </ItemGroup>
 </Project>
