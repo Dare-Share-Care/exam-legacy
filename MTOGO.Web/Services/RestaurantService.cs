@@ -19,8 +19,7 @@ public class RestaurantService : IRestaurantService
 
     public async Task<MenuDto> GetMenu(long restaurantId)
     {
-        var spec = new GetMenuByRestaurantIdSpec(restaurantId);
-        var menu = await _menuRepository.GetBySpecAsync(spec);
+        var menu = await _menuRepository.FirstOrDefaultAsync(new GetMenuByRestaurantIdSpec(restaurantId));
 
         // Null check
         if (menu == null) throw new MenuNotFoundException(restaurantId);
