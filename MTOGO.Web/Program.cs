@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using MTOGO.Web.Data;
-using Vite.AspNetCore.Extensions;
 
 var policyName = "AllowOrigin";
 
@@ -29,10 +28,8 @@ builder.Services.AddDbContext<MtogoContext>(options =>
     // options.UseSqlServer(builder.Configuration.GetConnectionString("Janus"));
     // options.UseSqlServer(builder.Configuration.GetConnectionString("Julius"));
 });
-    
+
 //Build services
-builder.Services.AddControllersWithViews();
-builder.Services.AddViteServices(); 
 
 var app = builder.Build();
 
