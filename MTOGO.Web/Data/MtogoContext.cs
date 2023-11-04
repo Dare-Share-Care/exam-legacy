@@ -21,12 +21,22 @@ public class MtogoContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         //Set primary keys
+        //Order Aggregates
         modelBuilder.Entity<Order>().HasKey(o => o.Id);
         modelBuilder.Entity<OrderLine>().HasKey(ol => ol.Id);
-        modelBuilder.Entity<MenuItem>().HasKey(m => m.Id);
+        
+        //Restaurant Aggregates
+        modelBuilder.Entity<Restaurant>().HasKey(r => r.Id);
+        modelBuilder.Entity<Menu>().HasKey(m => m.Id);
+        modelBuilder.Entity<MenuItem>().HasKey(mi => mi.Id);
+        modelBuilder.Entity<Pricing>().HasKey(p => p.Id);
         
         //Add Value Objects
         modelBuilder.Entity<Address>(ConfigureAddress);
+
+        //Entity properties
+        modelBuilder.Entity<Pricing>()
+            .Property(p => p.Price).HasColumnType("decimal(18,2)");
 
 
         //Set relationships
@@ -37,12 +47,29 @@ public class MtogoContext : DbContext
             .WithOne(ol => ol.Order)
             .HasForeignKey(ol => ol.OrderId);
         
-        //OrderLines > MenuItem
+        //OrderLine > MenuItem
         modelBuilder.Entity<OrderLine>()
-            .ToTable("OrderLine")
             .HasOne(ol => ol.MenuItem)
             .WithMany()
             .HasForeignKey(ol => ol.MenuItemId);
+        
+        //Restaurant > Menu
+        modelBuilder.Entity<Restaurant>()
+            .HasOne(r => r.Menu)
+            .WithOne()
+            .HasForeignKey<Menu>(m => m.RestaurantId);
+        
+        //Menu > MenuItems
+        modelBuilder.Entity<Menu>()
+            .HasMany(m => m.Items)
+            .WithOne(mi => mi.Menu)
+            .HasForeignKey(mi => mi.MenuId);
+        
+        //MenuItem > Pricing
+        modelBuilder.Entity<MenuItem>()
+            .HasOne(mi => mi.Price)
+            .WithMany()
+            .HasForeignKey(mi => mi.PriceId);
     }
     
     //Address value object

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MTOGO.Web.Migrations
 {
     [DbContext(typeof(MtogoContext))]
-    [Migration("20231104162224_ThirdCreate")]
-    partial class ThirdCreate
+    [Migration("20231104170731_FinishRestaurantAggregates")]
+    partial class FinishRestaurantAggregates
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -95,10 +95,72 @@ namespace MTOGO.Web.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderLine", (string)null);
+                    b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("MTOGO.Web.Entities.RestaurantAggregate.Menu", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("RestaurantId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId")
+                        .IsUnique();
+
+                    b.ToTable("Menu");
                 });
 
             modelBuilder.Entity("MTOGO.Web.Entities.RestaurantAggregate.MenuItem", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("MenuId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("PriceId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MenuId");
+
+                    b.HasIndex("PriceId");
+
+                    b.ToTable("MenuItems");
+                });
+
+            modelBuilder.Entity("MTOGO.Web.Entities.RestaurantAggregate.Pricing", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Pricing");
+                });
+
+            modelBuilder.Entity("MTOGO.Web.Entities.RestaurantAggregate.Restaurant", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -112,7 +174,7 @@ namespace MTOGO.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MenuItems");
+                    b.ToTable("Restaurant");
                 });
 
             modelBuilder.Entity("MTOGO.Web.Entities.OrderAggregate.Order", b =>
@@ -145,9 +207,48 @@ namespace MTOGO.Web.Migrations
                     b.Navigation("Order");
                 });
 
+            modelBuilder.Entity("MTOGO.Web.Entities.RestaurantAggregate.Menu", b =>
+                {
+                    b.HasOne("MTOGO.Web.Entities.RestaurantAggregate.Restaurant", null)
+                        .WithOne("Menu")
+                        .HasForeignKey("MTOGO.Web.Entities.RestaurantAggregate.Menu", "RestaurantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("MTOGO.Web.Entities.RestaurantAggregate.MenuItem", b =>
+                {
+                    b.HasOne("MTOGO.Web.Entities.RestaurantAggregate.Menu", "Menu")
+                        .WithMany("Items")
+                        .HasForeignKey("MenuId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MTOGO.Web.Entities.RestaurantAggregate.Pricing", "Price")
+                        .WithMany()
+                        .HasForeignKey("PriceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Menu");
+
+                    b.Navigation("Price");
+                });
+
             modelBuilder.Entity("MTOGO.Web.Entities.OrderAggregate.Order", b =>
                 {
                     b.Navigation("Lines");
+                });
+
+            modelBuilder.Entity("MTOGO.Web.Entities.RestaurantAggregate.Menu", b =>
+                {
+                    b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("MTOGO.Web.Entities.RestaurantAggregate.Restaurant", b =>
+                {
+                    b.Navigation("Menu")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
