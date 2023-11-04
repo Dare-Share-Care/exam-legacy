@@ -1,4 +1,4 @@
-namespace MTOGO.Web.Models.Aggregates.OrderAggregate;
+namespace MTOGO.Web.Entities.OrderAggregate;
 
 public class Address // ValueObject
 {
