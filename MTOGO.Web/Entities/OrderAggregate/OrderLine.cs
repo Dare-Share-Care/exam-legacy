@@ -1,9 +1,8 @@
 using MTOGO.Web.Entities.RestaurantAggregate;
-using MTOGO.Web.Interfaces;
 
 namespace MTOGO.Web.Entities.OrderAggregate;
 
-public class OrderLine : BaseEntity, IAggregateRoot
+public class OrderLine : BaseEntity
 {
     public long OrderId {get; set;}
     public long MenuItemId {get; set;}

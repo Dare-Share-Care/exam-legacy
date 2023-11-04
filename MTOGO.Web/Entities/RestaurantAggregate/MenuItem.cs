@@ -1,7 +1,5 @@
-using MTOGO.Web.Interfaces;
-
 namespace MTOGO.Web.Entities.RestaurantAggregate;
-public class MenuItem : BaseEntity, IAggregateRoot
+public class MenuItem : BaseEntity
 {
     public long MenuId { get; set; }
     public Menu Menu { get; set; } = null!;
