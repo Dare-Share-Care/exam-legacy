@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using MTOGO.Web.Entities.OrderAggregate;
 using MTOGO.Web.Entities.RestaurantAggregate;
 
@@ -24,6 +25,9 @@ public class MtogoContext : DbContext
         modelBuilder.Entity<Order>().HasKey(o => o.Id);
         modelBuilder.Entity<OrderLine>().HasKey(ol => ol.Id);
         modelBuilder.Entity<MenuItem>().HasKey(m => m.Id);
+        
+        //Add Value Objects
+        modelBuilder.Entity<Address>(ConfigureAddress);
 
 
         //Set relationships
@@ -41,5 +45,14 @@ public class MtogoContext : DbContext
             .HasOne(ol => ol.MenuItem)
             .WithMany()
             .HasForeignKey(ol => ol.MenuItemId);
+    }
+    
+    void ConfigureAddress<T>(EntityTypeBuilder<T> entity) where T : Address
+    {
+        entity.ToTable("Address", "dbo");
+
+        entity.Property<int>("Id")
+            .IsRequired();
+        entity.HasKey("Id");
     }
 }
