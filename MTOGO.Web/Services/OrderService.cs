@@ -1,6 +1,6 @@
 namespace MTOGO.Web.Services;
 
-public class DummyService
+public class OrderService
 {
     
 }

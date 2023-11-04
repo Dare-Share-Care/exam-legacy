@@ -18,7 +18,6 @@ public class MtogoContext : DbContext
     {
     }
 
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         //Set primary keys
@@ -39,7 +38,6 @@ public class MtogoContext : DbContext
             .HasForeignKey(ol => ol.OrderId);
         
         //OrderLines > MenuItem
-        // OrderLines > MenuItem
         modelBuilder.Entity<OrderLine>()
             .ToTable("OrderLine")
             .HasOne(ol => ol.MenuItem)
@@ -47,6 +45,7 @@ public class MtogoContext : DbContext
             .HasForeignKey(ol => ol.MenuItemId);
     }
     
+    //Address value object
     void ConfigureAddress<T>(EntityTypeBuilder<T> entity) where T : Address
     {
         entity.ToTable("Address", "dbo");
