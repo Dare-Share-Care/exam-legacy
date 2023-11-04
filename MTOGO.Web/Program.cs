@@ -22,10 +22,12 @@ builder.Services.AddCors(options =>
 });
 
 //DBContext
-// builder.Services.AddDbContext<MtogoContext>(options =>
-// {
-//     options.UseSqlServer(builder.Configuration.GetConnectionString("DbContext"));
-// });
+builder.Services.AddDbContext<MtogoContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("Frederik"));
+    // options.UseSqlServer(builder.Configuration.GetConnectionString("Janus"));
+    // options.UseSqlServer(builder.Configuration.GetConnectionString("Julius"));
+});
 
 //Build services
 
