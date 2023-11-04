@@ -28,10 +28,12 @@ builder.Services.AddDbContext<MtogoContext>(options =>
     // options.UseSqlServer(builder.Configuration.GetConnectionString("Janus"));
     // options.UseSqlServer(builder.Configuration.GetConnectionString("Julius"));
 });
-
+    
 //Build services
 
 var app = builder.Build();
+
+app.UseStaticFiles();
 
 app.UseSwagger();
 app.UseSwaggerUI();
