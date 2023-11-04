@@ -60,14 +60,10 @@ public class MtogoContext : DbContext
             .HasForeignKey<Menu>(m => m.RestaurantId);
         
         //Menu > MenuItems
-        modelBuilder.Entity<Menu>()
-            .HasMany(m => m.Items)
-            .WithOne(mi => mi.Menu)
-            .HasForeignKey(mi => mi.MenuId);
         
         //MenuItem > Pricing
         modelBuilder.Entity<MenuItem>()
-            .HasOne(mi => mi.Price)
+            .HasOne(mi => mi.Pricing)
             .WithMany()
             .HasForeignKey(mi => mi.PriceId);
     }

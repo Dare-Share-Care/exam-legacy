@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using MTOGO.Web.Data;
+using MTOGO.Web.Interfaces.DomainServices;
+using MTOGO.Web.Interfaces.Repositories;
+using MTOGO.Web.Services;
 
 var policyName = "AllowOrigin";
 
@@ -30,6 +33,11 @@ builder.Services.AddDbContext<MtogoContext>(options =>
 });
 
 //Build services
+builder.Services.AddScoped<IRestaurantService, RestaurantService>();
+
+//Build repositories
+builder.Services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
+builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 
 var app = builder.Build();
 
