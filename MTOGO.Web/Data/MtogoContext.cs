@@ -1,6 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace MTOGO.Web.Data;
 
-public class MtogoContext
+public class MtogoContext : DbContext
 {
     
 }
