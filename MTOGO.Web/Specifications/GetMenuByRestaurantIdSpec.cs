@@ -3,7 +3,7 @@ using MTOGO.Web.Entities.RestaurantAggregate;
 
 namespace MTOGO.Web.Specifications;
 
-public class GetMenuByRestaurantIdSpec : Specification<Menu>
+public sealed class GetMenuByRestaurantIdSpec : Specification<Menu>
 {
     public GetMenuByRestaurantIdSpec(long restaurantId)
     {

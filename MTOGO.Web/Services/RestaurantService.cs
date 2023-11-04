@@ -16,7 +16,6 @@ public class RestaurantService : IRestaurantService
         _menuRepository = menuRepository;
     }
 
-
     public async Task<MenuDto> GetMenu(long restaurantId)
     {
         var menu = await _menuRepository.FirstOrDefaultAsync(new GetMenuByRestaurantIdSpec(restaurantId));
