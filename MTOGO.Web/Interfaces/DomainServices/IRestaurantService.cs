@@ -6,10 +6,10 @@ namespace MTOGO.Web.Interfaces.DomainServices;
 public interface IRestaurantService
 {
     public Task<RestaurantDto> CreateRestaurantAsync(string name);
-    public Task<List<MenuItemDto>> GetRestaurantMenu(long restaurantId);
-    public Task<RestaurantDto> AddMenuItem(long restaurantId, MenuItemDto dto);
-    public Task<RestaurantDto> RemoveMenuItem(long restaurantId, long menuItemId);
+    public Task<List<MenuItemDto>> GetRestaurantMenuAsync(long restaurantId);
+    public Task<RestaurantDto> AddMenuItemAsync(long restaurantId, MenuItemDto dto);
+    public Task<RestaurantDto> RemoveMenuItemAsync(long restaurantId, long menuItemId);
     
-    public Task<List<RestaurantDto>> GetAllRestaurants();
+    public Task<List<RestaurantDto>> GetAllRestaurantsAsync();
     
 }

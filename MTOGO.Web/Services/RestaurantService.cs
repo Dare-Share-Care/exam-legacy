@@ -31,7 +31,7 @@ public class RestaurantService : IRestaurantService
         return restaurantDto;
     }
 
-    public async Task<List<MenuItemDto>> GetRestaurantMenu(long restaurantId)
+    public async Task<List<MenuItemDto>> GetRestaurantMenuAsync(long restaurantId)
     {
         var restaurant =
             await _restaurantReadRepository.FirstOrDefaultAsync(new GetRestaurantWithMenuItemsSpec(restaurantId));
@@ -50,7 +50,7 @@ public class RestaurantService : IRestaurantService
         return menu;
     }
 
-    public async Task<RestaurantDto> AddMenuItem(long restaurantId, MenuItemDto dto)
+    public async Task<RestaurantDto> AddMenuItemAsync(long restaurantId, MenuItemDto dto)
     {
         //Get the restaurant we want to add the menu item to
         var restaurant =
@@ -94,7 +94,7 @@ public class RestaurantService : IRestaurantService
         return restaurantDto;
     }
 
-    public async Task<RestaurantDto> RemoveMenuItem(long restaurantId, long menuItemId)
+    public async Task<RestaurantDto> RemoveMenuItemAsync(long restaurantId, long menuItemId)
     {
         //Get the restaurant we want to remove the menu item from
         var restaurant =
@@ -133,7 +133,7 @@ public class RestaurantService : IRestaurantService
         return restaurantDto;
     }
 
-    public async Task<List<RestaurantDto>> GetAllRestaurants()
+    public async Task<List<RestaurantDto>> GetAllRestaurantsAsync()
     {
         var restaurants = await _restaurantReadRepository.ListAsync();
         var restaurantDtos = restaurants.Select(restaurant => new RestaurantDto
