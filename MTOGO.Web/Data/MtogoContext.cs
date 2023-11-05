@@ -27,20 +27,17 @@ public class MtogoContext : DbContext
         
         //Restaurant Aggregates
         modelBuilder.Entity<Restaurant>().HasKey(r => r.Id);
-        modelBuilder.Entity<Menu>().HasKey(m => m.Id);
         modelBuilder.Entity<MenuItem>().HasKey(mi => mi.Id);
-        modelBuilder.Entity<Pricing>().HasKey(p => p.Id);
         
         //Add Value Objects
         modelBuilder.Entity<Address>(ConfigureAddress);
 
         //Entity properties
-        modelBuilder.Entity<Pricing>()
+        modelBuilder.Entity<MenuItem>()
             .Property(p => p.Price).HasColumnType("decimal(18,2)");
 
 
         //Set relationships
-        
         //Order > OrderLines
         modelBuilder.Entity<Order>().ToTable("Order")
             .HasMany(o => o.Lines)
@@ -53,19 +50,11 @@ public class MtogoContext : DbContext
             .WithMany()
             .HasForeignKey(ol => ol.MenuItemId);
         
-        //Restaurant > Menu
+        //Restaurant > MenuItems
         modelBuilder.Entity<Restaurant>()
-            .HasOne(r => r.Menu)
-            .WithOne()
-            .HasForeignKey<Menu>(m => m.RestaurantId);
-        
-        //Menu > MenuItems
-        
-        //MenuItem > Pricing
-        modelBuilder.Entity<MenuItem>()
-            .HasOne(mi => mi.Pricing)
-            .WithMany()
-            .HasForeignKey(mi => mi.PriceId);
+            .HasMany(r => r.MenuItems)
+            .WithOne(mi => mi.Restaurant)
+            .HasForeignKey(mi => mi.RestaurantId);
     }
     
     //Address value object
