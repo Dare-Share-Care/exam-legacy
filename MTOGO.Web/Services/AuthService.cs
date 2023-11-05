@@ -2,6 +2,7 @@ using MTOGO.Web.Entities.CustomerAggregate;
 using MTOGO.Web.Interfaces.DomainServices;
 using MTOGO.Web.Interfaces.Repositories;
 using MTOGO.Web.Models.Dto;
+using MTOGO.Web.Specifications;
 
 namespace MTOGO.Web.Services;
 
@@ -14,9 +15,15 @@ public class AuthService : IAuthService
         _userRepository = userRepository;
     }
 
-    public Task<string> LoginAsync(string username, string password)
+    public async Task LoginAsync(LoginDto dto)
     {
-        throw new NotImplementedException();
+        var user = await _userRepository.FirstOrDefaultAsync(new GetUserByEmailSpec(dto.Email));
+
+        // validate
+        if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
+            throw new Exception("Username or password is incorrect");
+
+        //TODO: generate token
     }
 
     public async Task RegisterAsync(RegisterDto dto)
@@ -34,7 +41,7 @@ public class AuthService : IAuthService
             Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
             RoleId = (int)dto.RoleType
         };
-        
+
         //Add user to database
         await _userRepository.AddAsync(user);
         await _userRepository.SaveChangesAsync();
