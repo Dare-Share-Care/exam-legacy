@@ -144,5 +144,4 @@ public class RestaurantService : IRestaurantService
 
         return restaurantDtos;
     }
-
 }
