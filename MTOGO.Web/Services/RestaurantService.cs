@@ -53,14 +53,15 @@ public class RestaurantService : IRestaurantService
     public async Task<RestaurantDto> AddMenuItem(long restaurantId, MenuItemDto dto)
     {
         //Get the restaurant we want to add the menu item to
-        var restaurant = await _restaurantRepository.FirstOrDefaultAsync(new GetRestaurantWithMenuItemsSpec(restaurantId));
-        
-        
+        var restaurant =
+            await _restaurantRepository.FirstOrDefaultAsync(new GetRestaurantWithMenuItemsSpec(restaurantId));
+
+
         if (restaurant is null)
         {
             throw new RestaurantException($"Restaurant with id {restaurantId} not found");
         }
-        
+
         //Set menu items
 
         //Add the menu item to the restaurant
@@ -73,7 +74,7 @@ public class RestaurantService : IRestaurantService
             };
             restaurant.MenuItems.Add(menuItem);
         }
-        
+
         //Update the restaurant
         await _restaurantRepository.UpdateAsync(restaurant);
 
@@ -96,7 +97,8 @@ public class RestaurantService : IRestaurantService
     public async Task<RestaurantDto> RemoveMenuItem(long restaurantId, long menuItemId)
     {
         //Get the restaurant we want to remove the menu item from
-        var restaurant = await _restaurantRepository.FirstOrDefaultAsync(new GetRestaurantWithMenuItemsSpec(restaurantId));
+        var restaurant =
+            await _restaurantRepository.FirstOrDefaultAsync(new GetRestaurantWithMenuItemsSpec(restaurantId));
         if (restaurant is null)
         {
             throw new RestaurantException($"Restaurant with id {restaurantId} not found");
@@ -108,12 +110,13 @@ public class RestaurantService : IRestaurantService
         {
             throw new RestaurantException($"Menu item with id {menuItemId} not found");
         }
+
         restaurant.MenuItems.Remove(menuItem);
-        
+
         //Update the restaurant
         await _restaurantRepository.UpdateAsync(restaurant);
 
-        
+
         //Return the updated restaurant to reflect the new menu
         var restaurantDto = new RestaurantDto
         {
@@ -129,4 +132,17 @@ public class RestaurantService : IRestaurantService
 
         return restaurantDto;
     }
+
+    public async Task<List<RestaurantDto>> GetAllRestaurants()
+    {
+        var restaurants = await _restaurantReadRepository.ListAsync();
+        var restaurantDtos = restaurants.Select(restaurant => new RestaurantDto
+        {
+            Id = restaurant.Id,
+            Name = restaurant.Name,
+        }).ToList();
+
+        return restaurantDtos;
+    }
+
 }

@@ -42,4 +42,12 @@ public class RestaurantController : ControllerBase
         var restaurant = await _restaurantService.RemoveMenuItem(restaurantId, menuItemId);
         return Ok(restaurant);
     }
+    
+    
+    [HttpGet("get-all-restaurants")]
+    public async Task<IActionResult> GetAllRestaurants()
+    {
+        var restaurants = await _restaurantService.GetAllRestaurants();
+        return Ok(restaurants);
+    }
 }

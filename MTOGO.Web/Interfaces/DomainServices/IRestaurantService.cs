@@ -10,4 +10,6 @@ public interface IRestaurantService
     public Task<RestaurantDto> AddMenuItem(long restaurantId, MenuItemDto dto);
     public Task<RestaurantDto> RemoveMenuItem(long restaurantId, long menuItemId);
     
+    public Task<List<RestaurantDto>> GetAllRestaurants();
+    
 }
