@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MTOGO.Web.Interfaces.DomainServices;
+using MTOGO.Web.Models.ViewModels;
 
 namespace MTOGO.Web.Controllers;
 
@@ -17,7 +18,17 @@ public class RestaurantController : ControllerBase
     [HttpGet("{restaurantId}/menu")]
     public async Task<IActionResult> GetMenu(long restaurantId)
     {
-        var menu = await _restaurantService.GetMenu(restaurantId);
-        return Ok(menu);
+        var dto = await _restaurantService.GetMenu(restaurantId);
+        
+        var menuViewModel = new MenuViewModel
+        {
+            Items = dto.Items.Select(item => new MenuItemViewModel
+            {
+                Name = item.Name,
+                Price = item.Price
+            }).ToList()
+        };
+        
+        return Ok(menuViewModel);
     }
 }

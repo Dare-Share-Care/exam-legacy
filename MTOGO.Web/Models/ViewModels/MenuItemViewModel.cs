@@ -1,6 +1,6 @@
-namespace MTOGO.Web.Models.Dto;
+namespace MTOGO.Web.Models.ViewModels;
 
-public class MenuItemDto : BaseDto
+public class MenuItemViewModel
 {
     public string? Name { get; set; }
     public decimal Price { get; set; }
