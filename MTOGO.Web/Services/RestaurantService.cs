@@ -56,14 +56,18 @@ public class RestaurantService : IRestaurantService
         {
             throw new Exception($"Restaurant with id {restaurantId} not found");
         }
-        
-        var menuItem = new MenuItem
+
+        if (dto.Name != null)
         {
-            Name = dto.Name,
-            Price = dto.Price
-        };
+            var menuItem = new MenuItem
+            {
+                Name = dto.Name,
+                Price = dto.Price
+            };
         
-        restaurant.MenuItems.Add(menuItem);
+            restaurant.MenuItems.Add(menuItem);
+        }
+
         await _restaurantRepository.UpdateAsync(restaurant);
         
         var restaurantDto = new RestaurantDto
