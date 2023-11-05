@@ -1,4 +1,4 @@
-namespace MTOGO.Web.Models.Dto;
+namespace MTOGO.Web.Models.Dto.Auth;
 
 public class LoginDto
 {

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MTOGO.Web.Interfaces.DomainServices;
-using MTOGO.Web.Models.Dto;
+using MTOGO.Web.Models.Dto.Auth;
 
 namespace MTOGO.Web.Controllers;
 

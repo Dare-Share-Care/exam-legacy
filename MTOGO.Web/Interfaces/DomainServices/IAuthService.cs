@@ -1,4 +1,4 @@
-using MTOGO.Web.Models.Dto;
+using MTOGO.Web.Models.Dto.Auth;
 
 namespace MTOGO.Web.Interfaces.DomainServices;
 

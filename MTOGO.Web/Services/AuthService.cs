@@ -1,7 +1,7 @@
 using MTOGO.Web.Entities.CustomerAggregate;
 using MTOGO.Web.Interfaces.DomainServices;
 using MTOGO.Web.Interfaces.Repositories;
-using MTOGO.Web.Models.Dto;
+using MTOGO.Web.Models.Dto.Auth;
 using MTOGO.Web.Specifications;
 
 namespace MTOGO.Web.Services;
