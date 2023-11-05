@@ -32,6 +32,7 @@ builder.Services.AddDbContext<MtogoContext>(options =>
 
 //Build services
 builder.Services.AddScoped<IRestaurantService, RestaurantService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 //Build repositories
 builder.Services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
