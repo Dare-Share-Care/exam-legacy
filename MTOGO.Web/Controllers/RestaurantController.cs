@@ -35,4 +35,11 @@ public class RestaurantController : ControllerBase
         var restaurant = await _restaurantService.AddMenuItem(restaurantId, dto);
         return Ok(restaurant);
     }
+    
+    [HttpDelete("remove-menuitem/{restaurantId}")]
+    public async Task<IActionResult> RemoveMenuItem(long restaurantId, [FromBody] long menuItemId)
+    {
+        var restaurant = await _restaurantService.RemoveMenuItem(restaurantId, menuItemId);
+        return Ok(restaurant);
+    }
 }
