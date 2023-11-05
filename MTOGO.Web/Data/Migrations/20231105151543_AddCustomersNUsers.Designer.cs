@@ -4,6 +4,7 @@ using MTOGO.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MTOGO.Web.Migrations
 {
     [DbContext(typeof(MtogoContext))]
-    partial class MtogoContextModelSnapshot : ModelSnapshot
+    [Migration("20231105151543_AddCustomersNUsers")]
+    partial class AddCustomersNUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,7 @@ namespace MTOGO.Web.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("MTOGO.Web.Entities.CustomerAggregate.Role", b =>
+            modelBuilder.Entity("MTOGO.Web.Entities.CustomerAggregate.Customer", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,12 +33,31 @@ namespace MTOGO.Web.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<int>("RoleType")
-                        .HasColumnType("int");
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("MTOGO.Web.Entities.CustomerAggregate.User", b =>
@@ -50,16 +72,11 @@ namespace MTOGO.Web.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("RoleId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -113,6 +130,8 @@ namespace MTOGO.Web.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
+
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("Order", (string)null);
                 });
@@ -182,15 +201,15 @@ namespace MTOGO.Web.Migrations
                     b.ToTable("Restaurant");
                 });
 
-            modelBuilder.Entity("MTOGO.Web.Entities.CustomerAggregate.User", b =>
+            modelBuilder.Entity("MTOGO.Web.Entities.CustomerAggregate.Customer", b =>
                 {
-                    b.HasOne("MTOGO.Web.Entities.CustomerAggregate.Role", "Role")
-                        .WithMany("Users")
-                        .HasForeignKey("RoleId")
+                    b.HasOne("MTOGO.Web.Entities.CustomerAggregate.User", "User")
+                        .WithOne("Customer")
+                        .HasForeignKey("MTOGO.Web.Entities.CustomerAggregate.Customer", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Role");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MTOGO.Web.Entities.OrderAggregate.Order", b =>
@@ -201,7 +220,15 @@ namespace MTOGO.Web.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MTOGO.Web.Entities.CustomerAggregate.Customer", "Customer")
+                        .WithMany("Orders")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Address");
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("MTOGO.Web.Entities.OrderAggregate.OrderLine", b =>
@@ -234,9 +261,15 @@ namespace MTOGO.Web.Migrations
                     b.Navigation("Restaurant");
                 });
 
-            modelBuilder.Entity("MTOGO.Web.Entities.CustomerAggregate.Role", b =>
+            modelBuilder.Entity("MTOGO.Web.Entities.CustomerAggregate.Customer", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("MTOGO.Web.Entities.CustomerAggregate.User", b =>
+                {
+                    b.Navigation("Customer")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("MTOGO.Web.Entities.OrderAggregate.Order", b =>

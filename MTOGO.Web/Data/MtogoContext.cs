@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using MTOGO.Web.Entities.CustomerAggregate;
 using MTOGO.Web.Entities.OrderAggregate;
 using MTOGO.Web.Entities.RestaurantAggregate;
 
@@ -7,6 +8,10 @@ namespace MTOGO.Web.Data;
 
 public class MtogoContext : DbContext
 {
+    //User
+    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<Role> Roles { get; set; } = null!;
+    
     //Order
     public DbSet<Order> Orders { get; set; } = null!;
     public DbSet<OrderLine> OrderItems { get; set; } = null!;
@@ -55,6 +60,13 @@ public class MtogoContext : DbContext
             .HasMany(r => r.MenuItems)
             .WithOne(mi => mi.Restaurant)
             .HasForeignKey(mi => mi.RestaurantId);
+        
+        //User > Roles
+        modelBuilder.Entity<User>()
+            .HasOne(u => u.Role)
+            .WithMany(r => r.Users)
+            .HasForeignKey(u => u.RoleId);
+       
     }
     
     //Address value object

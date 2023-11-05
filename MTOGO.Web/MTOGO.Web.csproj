@@ -26,6 +26,7 @@
 
 
     <ItemGroup>
+      <Folder Include="Entities\CustomerAggregate\" />
       <Folder Include="Models\ViewModels\" />
       <Folder Include="wwwroot\" />
     </ItemGroup>
