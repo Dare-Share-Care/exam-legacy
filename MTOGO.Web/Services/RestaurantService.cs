@@ -9,15 +9,25 @@ namespace MTOGO.Web.Services;
 public class RestaurantService : IRestaurantService
 {
     private readonly IReadRepository<Restaurant> _restaurantReadRepository;
+    private readonly IRepository<Restaurant> _restaurantRepository;
 
-    public RestaurantService(IReadRepository<Restaurant> restaurantReadRepository)
+    public RestaurantService(IReadRepository<Restaurant> restaurantReadRepository,
+        IRepository<Restaurant> restaurantRepository)
     {
         _restaurantReadRepository = restaurantReadRepository;
+        _restaurantRepository = restaurantRepository;
     }
 
-    public Task<RestaurantDto> CreateRestaurantAsync(string name)
+    public async Task<RestaurantDto> CreateRestaurantAsync(string name)
     {
-        throw new NotImplementedException();
+        var createdRestaurant = await _restaurantRepository.AddAsync(new Restaurant { Name = name });
+
+        var restaurantDto = new RestaurantDto
+        {
+            Id = createdRestaurant.Id,
+            Name = createdRestaurant.Name
+        };
+        return restaurantDto;
     }
 
     public async Task<List<MenuItemDto>> GetRestaurantMenu(long restaurantId)

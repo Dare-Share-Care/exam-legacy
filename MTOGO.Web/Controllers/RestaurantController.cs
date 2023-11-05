@@ -20,4 +20,11 @@ public class RestaurantController : ControllerBase
         var menu = await _restaurantService.GetRestaurantMenu(restaurantId);
         return Ok(menu);
     }
+    
+    [HttpPost]
+    public async Task<IActionResult> CreateRestaurant([FromBody] string name)
+    {
+        var restaurant = await _restaurantService.CreateRestaurantAsync(name);
+        return Ok(restaurant);
+    }
 }
