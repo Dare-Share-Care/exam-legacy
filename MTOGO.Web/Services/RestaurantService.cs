@@ -48,4 +48,36 @@ public class RestaurantService : IRestaurantService
 
         return menu;
     }
+
+    public async Task<RestaurantDto> AddMenuItem(long restaurantId, MenuItemDto dto)
+    {
+        var restaurant = await _restaurantRepository.GetByIdAsync(restaurantId);
+        if (restaurant is null)
+        {
+            throw new Exception($"Restaurant with id {restaurantId} not found");
+        }
+        
+        var menuItem = new MenuItem
+        {
+            Name = dto.Name,
+            Price = dto.Price
+        };
+        
+        restaurant.MenuItems.Add(menuItem);
+        await _restaurantRepository.UpdateAsync(restaurant);
+        
+        var restaurantDto = new RestaurantDto
+        {
+            Id = restaurant.Id,
+            Name = restaurant.Name,
+            Menu = restaurant.MenuItems.Select(menuItem => new MenuItemDto
+            {
+                Id = menuItem.Id,
+                Name = menuItem.Name,
+                Price = menuItem.Price
+            }).ToList()
+        };
+        
+        return restaurantDto;
+    }
 }
