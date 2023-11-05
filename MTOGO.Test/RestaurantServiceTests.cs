@@ -74,7 +74,7 @@ public class RestaurantServiceTests
         var restaurantId = 1;
         var restaurant = new Restaurant
         {
-            Id = restaurantId, Name = "Restaurant 1", MenuItems =
+            Id = restaurantId, Name = "Restaurant 1", Menu =
             {
                 new MenuItem { Id = 1, Name = "MenuItem 1", Price = 10 },
                 new MenuItem { Id = 2, Name = "MenuItem 2", Price = 20 },
@@ -108,7 +108,7 @@ public class RestaurantServiceTests
         const string menuItemName = "MenuItem 1";
         const decimal menuItemPrice = 10;
 
-        var restaurant = new Restaurant {Id = restaurantId, Name = "Restaurant 1", MenuItems =
+        var restaurant = new Restaurant {Id = restaurantId, Name = "Restaurant 1", Menu =
         {
             new MenuItem {Id = 1, Name = "MenuItem 1", Price = 10},
             new MenuItem {Id = 2, Name = "MenuItem 2", Price = 20},
@@ -160,7 +160,7 @@ public class RestaurantServiceTests
         const long restaurantId = 1;
         const long menuItemId = 1;
     
-        var restaurant = new Restaurant {Id = restaurantId, Name = "Restaurant 1", MenuItems =
+        var restaurant = new Restaurant {Id = restaurantId, Name = "Restaurant 1", Menu =
         {
             new MenuItem {Id = 1, Name = "MenuItem 1", Price = 10},
             new MenuItem {Id = 2, Name = "MenuItem 2", Price = 20},

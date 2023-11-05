@@ -8,6 +8,6 @@ public sealed class GetRestaurantWithMenuItemsSpec : Specification<Restaurant>
     public GetRestaurantWithMenuItemsSpec(long restaurantId)
     {
         Query.Where(res => res.Id == restaurantId)
-            .Include(res => res.MenuItems);
+            .Include(res => res.Menu);
     }
 }

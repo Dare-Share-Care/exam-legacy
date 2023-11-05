@@ -40,7 +40,7 @@ public class RestaurantService : IRestaurantService
             throw new Exception($"Restaurant with id {restaurantId} not found");
         }
 
-        var menu = restaurant.MenuItems.Select(menuItem => new MenuItemDto
+        var menu = restaurant.Menu.Select(menuItem => new MenuItemDto
         {
             Id = menuItem.Id,
             Name = menuItem.Name,
@@ -72,7 +72,7 @@ public class RestaurantService : IRestaurantService
                 Name = dto.Name,
                 Price = dto.Price
             };
-            restaurant.MenuItems.Add(menuItem);
+            restaurant.Menu.Add(menuItem);
         }
 
         //Update the restaurant
@@ -83,7 +83,7 @@ public class RestaurantService : IRestaurantService
         {
             Id = restaurant.Id,
             Name = restaurant.Name,
-            Menu = restaurant.MenuItems.Select(item => new MenuItemDto
+            Menu = restaurant.Menu.Select(item => new MenuItemDto
             {
                 Id = item.Id,
                 Name = item.Name,
@@ -105,13 +105,13 @@ public class RestaurantService : IRestaurantService
         }
 
         //Remove the menu item from the restaurant
-        var menuItem = restaurant.MenuItems.FirstOrDefault(x => x.Id == menuItemId);
+        var menuItem = restaurant.Menu.FirstOrDefault(x => x.Id == menuItemId);
         if (menuItem is null)
         {
             throw new RestaurantException($"Menu item with id {menuItemId} not found");
         }
 
-        restaurant.MenuItems.Remove(menuItem);
+        restaurant.Menu.Remove(menuItem);
 
         //Update the restaurant
         await _restaurantRepository.UpdateAsync(restaurant);
@@ -122,7 +122,7 @@ public class RestaurantService : IRestaurantService
         {
             Id = restaurant.Id,
             Name = restaurant.Name,
-            Menu = restaurant.MenuItems.Select(item => new MenuItemDto
+            Menu = restaurant.Menu.Select(item => new MenuItemDto
             {
                 Id = item.Id,
                 Name = item.Name,
