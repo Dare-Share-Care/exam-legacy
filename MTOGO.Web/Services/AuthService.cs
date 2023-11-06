@@ -13,12 +13,10 @@ namespace MTOGO.Web.Services;
 public class AuthService : IAuthService
 {
     private readonly IRepository<User> _userRepository;
-    private readonly IConfiguration _configuration;
 
-    public AuthService(IRepository<User> userRepository, IConfiguration configuration)
+    public AuthService(IRepository<User> userRepository)
     {
         _userRepository = userRepository;
-        _configuration = configuration;
     }
 
     public async Task<string> LoginAsync(LoginDto dto)
@@ -29,7 +27,6 @@ public class AuthService : IAuthService
         if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
             throw new Exception("Username or password is incorrect");
 
-        //TODO: generate token
         var token = CreateToken(user);
         
         return token;
@@ -58,7 +55,7 @@ public class AuthService : IAuthService
 
     private string CreateToken(User user)
     {
-        List<Claim> claims = new List<Claim>
+        var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Name, user.Email),
             new Claim(ClaimTypes.Role, "Customer")

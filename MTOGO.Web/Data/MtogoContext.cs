@@ -60,6 +60,12 @@ public class MtogoContext : DbContext
             .HasMany(o => o.Lines)
             .WithOne(ol => ol.Order)
             .HasForeignKey(ol => ol.OrderId);
+        
+        //Order > User
+        modelBuilder.Entity<Order>()
+            .HasOne(o => o.User)
+            .WithMany()
+            .HasForeignKey(o => o.UserId);
 
         //OrderLine > MenuItem
         modelBuilder.Entity<OrderLine>()
