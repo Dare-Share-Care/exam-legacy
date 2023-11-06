@@ -1,6 +1,6 @@
-namespace MTOGO.Web.Entities.OrderAggregate;
+namespace MTOGO.Web.Models.Dto;
 
-public class Address // ValueObject
+public class AddressDto
 {
     public string Street { get; set; } = null!;
     public string City { get; set; } = null!;

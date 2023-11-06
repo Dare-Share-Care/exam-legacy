@@ -1,6 +1,6 @@
-using MTOGO.Web.Entities.OrderAggregate;
+using MTOGO.Web.Models.ViewModels;
 
-namespace MTOGO.Web.Models;
+namespace MTOGO.Web.Models.ViewModels;
 
 public class OrderConfirmationModel
 {
@@ -10,6 +10,6 @@ public class OrderConfirmationModel
     public string? RestaurantPhoneNumber { get; set; }
     public string? Message { get; set; }
     public DateTime EstimatedDelivery { get; set; }
-    public List<OrderLine>? Order { get; set; }
+    public List<OrderLineModel>? OrderLines { get; set; }
     public decimal Total { get; set; }
 }

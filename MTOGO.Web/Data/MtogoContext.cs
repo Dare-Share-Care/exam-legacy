@@ -42,6 +42,9 @@ public class MtogoContext : DbContext
         //Decimal precision on price
         modelBuilder.Entity<MenuItem>()
             .Property(p => p.Price).HasColumnType("decimal(18,2)");
+        
+        modelBuilder.Entity<OrderLine>()
+            .Property(p => p.Price).HasColumnType("decimal(18,2)");
 
         //Unique Email
         modelBuilder.Entity<User>()

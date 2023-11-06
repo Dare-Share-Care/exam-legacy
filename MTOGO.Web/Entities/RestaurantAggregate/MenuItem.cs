@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace MTOGO.Web.Entities.RestaurantAggregate;
 
 public class MenuItem : BaseEntity
