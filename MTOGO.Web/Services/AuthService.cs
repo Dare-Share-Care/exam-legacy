@@ -1,3 +1,7 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 using MTOGO.Web.Entities.CustomerAggregate;
 using MTOGO.Web.Interfaces.DomainServices;
 using MTOGO.Web.Interfaces.Repositories;
@@ -9,13 +13,15 @@ namespace MTOGO.Web.Services;
 public class AuthService : IAuthService
 {
     private readonly IRepository<User> _userRepository;
+    private readonly IConfiguration _configuration;
 
-    public AuthService(IRepository<User> userRepository)
+    public AuthService(IRepository<User> userRepository, IConfiguration configuration)
     {
         _userRepository = userRepository;
+        _configuration = configuration;
     }
 
-    public async Task LoginAsync(LoginDto dto)
+    public async Task<string> LoginAsync(LoginDto dto)
     {
         var user = await _userRepository.FirstOrDefaultAsync(new GetUserByEmailSpec(dto.Email));
 
@@ -24,6 +30,9 @@ public class AuthService : IAuthService
             throw new Exception("Username or password is incorrect");
 
         //TODO: generate token
+        var token = CreateToken(user);
+        
+        return token;
     }
 
     public async Task RegisterAsync(RegisterDto dto)
@@ -45,5 +54,24 @@ public class AuthService : IAuthService
         //Add user to database
         await _userRepository.AddAsync(user);
         await _userRepository.SaveChangesAsync();
+    }
+
+    private string CreateToken(User user)
+    {
+        List<Claim> claims = new List<Claim>
+        {
+            new Claim(ClaimTypes.Name, user.Email),
+            new Claim(ClaimTypes.Role, "Customer")
+        };
+
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key"));
+        var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+        var token = new JwtSecurityToken(
+            claims: claims,
+            expires: DateTime.UtcNow.AddDays(1),
+            signingCredentials: cred
+        );
+        var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+        return jwt;
     }
 }

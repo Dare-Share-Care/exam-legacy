@@ -4,6 +4,6 @@ namespace MTOGO.Web.Interfaces.DomainServices;
 
 public interface IAuthService
 {
-    Task LoginAsync(LoginDto dto);
+    Task<string> LoginAsync(LoginDto dto);
     Task RegisterAsync(RegisterDto dto);
 }
