@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MTOGO.Web.Interfaces.DomainServices;
 using MTOGO.Web.Models.Dto;
+using MTOGO.Web.Models.ViewModels;
 
 namespace MTOGO.Web.Controllers;
 
@@ -20,7 +21,14 @@ public class RestaurantController : ControllerBase
     public async Task<IActionResult> GetAllRestaurants()
     {
         var restaurants = await _restaurantService.GetAllRestaurantsAsync();
-        return Ok(restaurants);
+        //Map to viewmodel
+        var model = restaurants.Select(restaurant => new RestaurantViewModel
+        {
+            Id = restaurant.Id,
+            Name = restaurant.Name
+        }).ToList();
+        
+        return Ok(model);
     }
 
     [HttpGet("{restaurantId}/menu")]
