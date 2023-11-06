@@ -35,7 +35,7 @@ public class AuthService : IAuthService
         return token;
     }
 
-    public async Task RegisterAsync(RegisterDto dto)
+    public async Task RegisterCustomerAsync(RegisterDto dto)
     {
         //Validate that email is not already in use
         var users = await _userRepository.ListAsync();
@@ -48,7 +48,7 @@ public class AuthService : IAuthService
         {
             Email = dto.Email,
             Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-            RoleId = (int)dto.RoleType
+            RoleId = 1 //Customer
         };
 
         //Add user to database
