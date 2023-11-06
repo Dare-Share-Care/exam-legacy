@@ -47,8 +47,14 @@ public class MtogoContext : DbContext
         modelBuilder.Entity<User>()
             .HasIndex(u => u.Email)
             .IsUnique();
+        
+        // //Unique Phone Number
+        modelBuilder.Entity<Restaurant>()
+            .HasIndex(r => r.PhoneNumber)
+            .IsUnique();
 
         //Set relationships
+        
         //Order > OrderLines
         modelBuilder.Entity<Order>().ToTable("Order")
             .HasMany(o => o.Lines)

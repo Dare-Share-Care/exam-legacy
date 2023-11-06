@@ -22,7 +22,7 @@ public class RestaurantController : ControllerBase
     {
         var restaurants = await _restaurantService.GetAllRestaurantsAsync();
         //Map to viewmodel
-        var model = restaurants.Select(restaurant => new RestaurantViewModel
+        var model = restaurants.Select(restaurant => new RestaurantModel
         {
             Id = restaurant.Id,
             Name = restaurant.Name
