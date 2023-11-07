@@ -12,8 +12,8 @@ namespace MTOGO.Test;
 public class RestaurantServiceTests
 {
     private readonly IRestaurantService _restaurantService;
-    private readonly Mock<IReadRepository<Restaurant>> _readRepoMock = new Mock<IReadRepository<Restaurant>>();
-    private readonly Mock<IRepository<Restaurant>> _repoMock = new Mock<IRepository<Restaurant>>();
+    private readonly Mock<IReadRepository<Restaurant>> _readRepoMock = new();
+    private readonly Mock<IRepository<Restaurant>> _repoMock = new();
 
     public RestaurantServiceTests()
     {

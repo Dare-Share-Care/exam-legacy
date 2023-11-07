@@ -69,14 +69,18 @@ public class OrderService : IOrderService
             }
         }
 
-        //Add order lines
+        // Add order lines
         foreach (var itemId in itemQuantities.Keys)
         {
+            var menuItem = restaurant.Menu.Find(m => m.Id == itemId);
+            var itemQuantity = itemQuantities[itemId];
+            var itemPrice = dto.Items.Find(i => i.Id == itemId)?.Price ?? 0;
+
             order.Lines.Add(new OrderLine
             {
                 MenuItemId = itemId,
-                Quantity = itemQuantities[itemId],
-                Price = dto.Items.Find(i => i.Id == itemId)?.Price ?? 0
+                Quantity = itemQuantity,
+                Price = itemPrice * itemQuantity // Update the Price property
             });
         }
 
@@ -91,7 +95,7 @@ public class OrderService : IOrderService
             select new OrderLineModel
             {
                 MenuItemName = menuItem.Name,
-                MenuItemPrice = menuItem.Price,
+                MenuItemPrice = menuItem.Price * line.Quantity,
                 Quantity = line.Quantity
             }).ToList();
 
