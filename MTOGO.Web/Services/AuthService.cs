@@ -21,14 +21,14 @@ public class AuthService : IAuthService
 
     public async Task<string> LoginAsync(LoginDto dto)
     {
-        var user = await _userRepository.FirstOrDefaultAsync(new GetUserByEmailSpec(dto.Email));
+        var user = await _userRepository.FirstOrDefaultAsync(new GetUserByEmailWithRoleSpec(dto.Email));
 
         // validate
         if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
             throw new Exception("Username or password is incorrect");
 
         var token = CreateToken(user);
-        
+
         return token;
     }
 
@@ -59,7 +59,7 @@ public class AuthService : IAuthService
         {
             new(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new(ClaimTypes.Email, user.Email),
-            new(ClaimTypes.Role, "Customer")
+            new(ClaimTypes.Role, user.Role.RoleType.ToString())
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key"));

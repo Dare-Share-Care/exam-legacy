@@ -3,10 +3,11 @@ using MTOGO.Web.Entities.CustomerAggregate;
 
 namespace MTOGO.Web.Specifications;
 
-public sealed class GetUserByEmailSpec : Specification<User>
+public sealed class GetUserByEmailWithRoleSpec : Specification<User>
 {
-    public GetUserByEmailSpec(string email)
+    public GetUserByEmailWithRoleSpec(string email)
     {
         Query.Where(user => user.Email == email);
+        Query.Include(user => user.Role);
     }
 }
