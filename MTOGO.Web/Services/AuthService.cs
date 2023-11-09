@@ -53,6 +53,20 @@ public class AuthService : IAuthService
         await _userRepository.SaveChangesAsync();
     }
 
+    public async Task ChangePasswordAsync(ChangePasswordDto dto)
+    {
+        var user = await _userRepository.FirstOrDefaultAsync(new GetUserByEmailSpec(dto.Email));
+        
+        if (user == null)
+            throw new Exception("User not found");
+
+        if (!BCrypt.Net.BCrypt.Verify(dto.OldPassword, user.Password))
+            throw new Exception("Old password is incorrect");
+        
+        user.Password = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+        await _userRepository.SaveChangesAsync();
+    }
+
     private string CreateToken(User user)
     {
         var claims = new List<Claim>

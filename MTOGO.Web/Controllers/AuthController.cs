@@ -28,4 +28,11 @@ public class AuthController : ControllerBase
         await _authService.RegisterCustomerAsync(dto);
         return Ok();
     }
+
+    [HttpPost("change-password")]
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto dto)
+    {
+        await _authService.ChangePasswordAsync(dto);
+        return Ok();
+    }
 }
