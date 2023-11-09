@@ -111,4 +111,9 @@ public class OrderService : IOrderService
             Total = order.Lines.Sum(l => l.Price * l.Quantity)
         };
     }
+
+    public Task<OrderDto> GetOrdersByEmailAsync(long id)
+    {
+        throw new NotImplementedException();
+    }
 }
