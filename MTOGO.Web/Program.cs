@@ -1,4 +1,7 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using MTOGO.Web.Data;
 using MTOGO.Web.Interfaces.DomainServices;
 using MTOGO.Web.Interfaces.Repositories;
@@ -39,6 +42,29 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
 builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 
+//JWT
+// JWT Configuration
+var key = Encoding.UTF8.GetBytes("super secret key");
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = false,
+            ValidateAudience = false
+        };
+    });
+                        
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireCustomerRole", policy => policy.RequireRole("Customer"));
+    // Add more policies for other roles as needed
+});
+
+
 var app = builder.Build();
 
 app.UseStaticFiles();
@@ -47,6 +73,8 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseCors(policyName);
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

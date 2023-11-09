@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MTOGO.Web.Interfaces.DomainServices;
 using MTOGO.Web.Models.Dto;
@@ -16,7 +17,8 @@ public class OrderController : ControllerBase
     }
     
     [HttpPost("create")]
-    public async Task<IActionResult> CreateOrderAsync(CreateOrderDto dto)
+    [Authorize(Roles ="Customer")]
+     public async Task<IActionResult> CreateOrderAsync(CreateOrderDto dto)
     {
         var orderConfirmation = await _orderService.CreateOrderAsync(dto);
         return Ok(orderConfirmation);
