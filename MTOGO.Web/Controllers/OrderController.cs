@@ -15,12 +15,19 @@ public class OrderController : ControllerBase
     {
         _orderService = orderService;
     }
-    
+
     [HttpPost("create")]
-    [Authorize(Roles ="Customer")]
-     public async Task<IActionResult> CreateOrderAsync(CreateOrderDto dto)
+    [Authorize(Roles = "Customer")]
+    public async Task<IActionResult> CreateOrderAsync(CreateOrderDto dto)
     {
         var orderConfirmation = await _orderService.CreateOrderAsync(dto);
         return Ok(orderConfirmation);
+    }
+
+    [HttpGet("get-orders-by-email")]
+    public async Task<IActionResult> GetOrdersByEmailAsync(string email)
+    {
+        var orders = await _orderService.GetOrdersByEmailAsync(email);
+        return Ok(orders);
     }
 }

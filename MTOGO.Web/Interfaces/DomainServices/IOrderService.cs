@@ -6,5 +6,5 @@ namespace MTOGO.Web.Interfaces.DomainServices;
 public interface IOrderService
 {
     Task<OrderConfirmationModel> CreateOrderAsync(CreateOrderDto dto);
-    Task<OrderDto> GetOrdersByEmailAsync(long id);
+    Task<List<OrderModel>> GetOrdersByEmailAsync(string email);
 }

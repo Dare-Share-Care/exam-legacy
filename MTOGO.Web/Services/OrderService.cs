@@ -112,8 +112,23 @@ public class OrderService : IOrderService
         };
     }
 
-    public Task<OrderDto> GetOrdersByEmailAsync(long id)
+    public async Task<List<OrderModel>> GetOrdersByEmailAsync(string email)
     {
-        throw new NotImplementedException();
+        var orders = await _orderRepository.ListAsync(new GetOrdersWithOrderLineAndAddressByEmailSpec(email));
+
+        var orderDtos = orders.Select(order => new OrderModel
+        {
+            Id = order.Id,
+            OrderDate = order.OrderDate,
+            Lines = order.Lines.Select(line => new OrderLineModel
+            {
+                MenuItemName = line.MenuItem.Name,
+                MenuItemPrice = line.MenuItem.Price * line.Quantity,
+                Quantity = line.Quantity
+            }).ToList()
+        }).ToList();
+
+
+        return orderDtos;
     }
 }
