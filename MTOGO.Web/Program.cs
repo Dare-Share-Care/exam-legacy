@@ -6,6 +6,7 @@ using MTOGO.Web.Data;
 using MTOGO.Web.Interfaces.DomainServices;
 using MTOGO.Web.Interfaces.Repositories;
 using MTOGO.Web.Services;
+using Prometheus;
 
 var policyName = "AllowOrigin";
 
@@ -76,6 +77,17 @@ app.UseCors(policyName);
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseRouting();
+app.UseHttpsRedirection();
+
+app.UseMetricServer();
+app.UseHttpMetrics();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 
 app.MapControllers();
 
