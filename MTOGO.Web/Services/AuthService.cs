@@ -69,6 +69,7 @@ public class AuthService : IAuthService
 
     private string CreateToken(User user)
     {
+        
         var claims = new List<Claim>
         {
             new(ClaimTypes.NameIdentifier, user.Id.ToString()),
@@ -76,6 +77,7 @@ public class AuthService : IAuthService
             new(ClaimTypes.Role, user.Role.RoleType.ToString())
         };
 
+        // TODO: Get secret key from config
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("super secret key"));
         var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
         var token = new JwtSecurityToken(
